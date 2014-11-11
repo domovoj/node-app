@@ -1,20 +1,14 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+var User = require('./models/user').User;
 
-var schema = mongoose.Schema({
-    name: String
+var user = new User({
+  username: "Tester2",
+  password: "secret"
 });
 
-schema.methods.meow = function () {
-    console.log(this.get('name'));
-};
+user.save(function(err, user, affected) {
+  if (err) throw err;
 
-var Cat = mongoose.model('Cat', schema);
-
-var kitty = new Cat({
-    name: 'Zildjian'
-});
-
-kitty.save(function (err, kitty, affected) {
-    kitty.meow();
+  User.findOne({username: "Tester2"}, function(err, tester) {
+    console.log(tester);
+  });
 });
